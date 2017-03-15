@@ -1,0 +1,144 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    name: jenkins
+  name: jenkins
+  namespace: test-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: jenkins
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        name: jenkins
+      name: jenkins
+    spec:
+      containers:
+      - name: jenkins
+        env:
+        - name: JAVA_OPTS
+          value: -Djava.awt.headless=true -Xms512m -Xmx2g -XX:MaxPermSize=1048M -Dorg.apache.commons.jelly.tags.fmt.timeZone=Europe/London
+            -Dcom.sun.management.jmxremote.local.only=false
+        - name: DOCKER_REGISTRY
+          value: bitesize-registry.default.svc.cluster.local:5000
+        - name: JENKINS_ADMIN_USER
+          value: admin
+        - name: JENKINS_ADMIN_PASSWORD
+          value: very_secret
+        - name: SEED_JOBS_REPO
+          value: git@github.com:AndyMoore111/test-app-v2.git
+        - name: GIT_PRIVATE_KEY
+          value: |
+            -----BEGIN RSA PRIVATE KEY-----
+            MIIJKAIBAAKCAgEAvdL8M6S0OTfPPpTSd/vNlCH8z+Vs2Pj0Lb35W+EvlIFsqwHh
+            23OemvNb7YULaL/Jbi1In5tjfjWUpGTDmjediR7cbOTU9LAF7en7ScS2mccizRIK
+            EHJkDqLEVDO0TC8t0c31CUPqHtHEO4mQnDNpw0BSt3Bnbhsin5j2MqJu+QsoGMeA
+            oWr1bLxjWmBvSJ9+qGbHd1YTdaV2DMPTLH5c7yf1Rm9abLuxXhNFtfEa322YxyfM
+            oGwSWPgkI96ubEitbtjZBUBKYfNf3xOhowM2/JEfr6EA2oNYW7NeYsUb8tuzSnFa
+            osizAw20pZUwJNmGpc1WlIrTYEzIZ4fa/uPDRf6XtyxM2ezDe7rzNyhyKMERMjoa
+            zsC+7CHrYDMLidC0HjYwRDsBlTOEN12Z0fIQSSi8BaJcgRgLualiVBs93roavsxc
+            fzocRuzhs5Gzx+DGEtaXsJjz5KxpjKO2CmqzNZ9VlxiPeL1E7SH/WNYHk4ViK/ik
+            4mVVGHr+OIwb5tb9FHe/MiZdxqwURPTOHKznC1b8z6vG4TdNykN1P8zm2aGZ1Xib
+            9F8gtg+6TVIxj3MQIg8I8y8ntUf3ipiaDO43Q5C622NgTVViOA0HmlprJoI8mu+X
+            j+BCabKj+HnzqAVWrP7njRhogr8h3l6mcwobG1H8mD898nLwacJrpTWQo9MCAwEA
+            AQKCAgAIdqG8A7ntWymoVqZTpyxxUFqfQlFqEx9/8pptmEqwylx3+2uAh1Uo/3S3
+            0FjD4NkwSmCUjS8Qb38jHUMDWztw46lcSY+dIUQCaY5EqbqifJh2oDlGpnMDnAo4
+            3t1JEElws0gbk6Waniuro+SIsloi1HlbqG1UIW2XxBAmDcv42qB9ClgX2lb69CNR
+            4j7T9BiHlZ2LGpFfi3MJ+qktsKygFR4Ad/KGKpAr65wOEqPqFk7bglDDTk47HUUv
+            PDx2o37oFE8IxucKGvnJTmzEgd4vwKCzCfCpzXVhEUxCBxvJ5jXGOeuammww1Kmb
+            QF2XJwOz3MXhdZcbEhFVXF9NQgZwws7BCkovKBRsCuqYgLDYXKHPWQGDILA//AP2
+            MHFmvONfUdFnzHfboc3NwXsg88/+q8CJgbAAxAoSNkPcyO4xt+KZWGwuL/4Gs8gn
+            RMrl4AxfyfKlXDNInHWBB1DMvGSFNJ81wedOqlnNxNaqp6vIaQU7Py0vRVfq8tpR
+            ehx9h3ZmSKo2d5L9kLT2n4iQUqCyPPZTHIGbLlXg52wL821Sg7UY29rANXPSI/gC
+            foPy7gEkxZ0nbrqOkyeyRqlykZyO40bu9lXwQUoJ2tT3kiXnyFkOiQ7vcpR8LIMn
+            x7ZZgxoQ85REsxv2WyZ8WWweFLUsF+Mj/6VWdmBwHmqytkXGIQKCAQEA5Y3Mq8vM
+            LjyklbOM/iM1CiHSc1qSFnJz2nNJrP19O1BBZ7bbgRMONR84Pb19+8HTbp/IUfen
+            Pv5iYWMpS67puZpjkVNkkMvRjHeTXpmSyC2D3rFDNJlCG962NvomzvCZYjJTuESy
+            OZY4EWnqHC/H0V9iQ5OpR5xhs/1gmgDCLI+xhnjABgAhKWgjqSy3VtvDYdMJv8fE
+            l4383QqmYOV5jt5iApZ6T4PaykwspXZ4YJVOSVWEGCfHnoe6GzU7B9hY4XEknQVu
+            lDgRo6kyb4TK35vaPmshjfN0RkPc1mZ9RmjsrVSYMsdESrTTEvo83KT7jYilItCG
+            CtXJmLMeF0dqewKCAQEA07FxKBWw2myL25lt84VanbAe32HHxjau7OJBPhMG83mS
+            aG5nVejpUrnXwxcqLT5MC9VW4HhCzWoC+EOWU/DZfC4+lHDISqzqRE3Sqx16Zrkq
+            AxOFJesfWHYH8N3gs04fYV9UzQMPQvv4Sz695Zw2hLty77qfwAxx2PCxtag6kppw
+            3fULHUJjIK09dnS6ChVePaftRixYuv249dcd76k+VxpfOiEoCgDE3HVySEoeyTr6
+            bhie75NZ+X1bPA9g9r4xqgwDwvJiw8RruTK9gO+mm7iBbTvOYskFzo8KvdLMWVYt
+            3R6VoWkLXhlU5ab/nHFSqg+7fyLE60RJAKWuG514iQKCAQBSYfFyNlGwxlLK5wVS
+            r4/5cun0PCzxoWGypG1siAzJnKPcdOOSDySqK+ojPj5Ye9dFfFKIGDkNgn4MNWo8
+            nymCUsYpAaS10nAB2WgqKzNiY/NPmI5l8hqnpeX/FQeYfQCPHUCugPj1cdPta/V4
+            6CzuFy1M01GNQbJOxkBFBMCq/WbYu70uah18nsMtk764jWYxVWvKSAdl3K9DJO9R
+            FwnpHCZQh3Cd2NRMhcoAF+RbxTmzV91wTdZ2Ln+8A/6LcjlzrwdU0v48c2LhOXfA
+            TggA+A37GLeSGi1AilpXF7Ed88n86r80eg8oQHz/8o6lIRCmWsPpGq0AdnlDNAU4
+            lYjBAoIBAQCsUwSfMdEObVAISkST+NlEBguLoghC1V7eHGwpwMlmx28kLcNWzsuo
+            ePonqKK/w7eZ5mfbQGp41rRmLnagDC6uhOKSaaDSESJ+ya8VdmCeYFrPuEMqE9Un
+            aKWcMLHqpEytMjJQ1Q3GZGDBt+hTki9bK1Ar0AqdBkRi6cRv8OsFTk1UkVYj0lfp
+            ULz4wZpz/OMDY8Cl4BG23jWDgkKvRmEl/KTKKBV01x1prP2D1TpsauNTXh17PsL+
+            ckojgQ1Yroi1OSSSvEcjv7BFSQW0gOFqX+6T4hxmk+dzN0PyNDf+/UVGe9AoXd9Q
+            EWTnsWLgketN3pKtsrsEHUkkCrrJZg2pAoIBAHdOavYNFpz8m+5nYxz73Ftcrrq7
+            epaosNF4/cUBggXYuwKf8KPdJTcoNXbqf3Trx8QH0jHeT2waV7UdgeNg51mcKTEJ
+            glZRArvMKrB68a2/CeJvIH0iAWQXs4r56Dk0Z/lPiKt9madqEUPXGeWzIEswbOd2
+            GoyUfWGgfNa0s0ByY8CYcPh1WAn7lqbZZrldyk5FqfKxmKPtmoe9XSCXLUJ3Lkee
+            f7gvNwGzj6GU/fMtEQUXSvoMw7Q59n4o1yjSrd+S5JjGMpUDAQPxJtcJtJk411W1
+            uy/+iHimf3eVSR6spkI1jrZfkX3G5G5g4x9Z8qMDPVEBVj+TrHlFxxPa7xU=
+            -----END RSA PRIVATE KEY-----
+        - name: MY_POD_IP
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.podIP
+        - name: MY_POD_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        - name: MY_POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        image: bitesize-registry.default.svc.cluster.local:5000/geribatai/jenkins:3.4.35
+        imagePullPolicy: Always
+        securityContext:
+          runAsUser: 1000
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        - containerPort: 50000
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        volumeMounts:
+        - mountPath: /var/jenkins_home
+          name: jenkins-data
+        - mountPath: /var/jenkins_home/repository
+          name: aptly-repository
+      - image: geribatai/aptly:1.0.0
+        imagePullPolicy: Always
+        name: aptly
+        ports:
+        - containerPort: 9797
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        volumeMounts:
+        - mountPath: /aptly
+          name: aptly-repository
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      securityContext:
+        fsGroup: 1000
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - emptyDir: {}
+        name: jenkins-data
+      - emptyDir: {}
+        name: aptly-repository
+

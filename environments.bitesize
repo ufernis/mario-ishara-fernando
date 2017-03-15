@@ -1,0 +1,48 @@
+project: test-app
+environments:
+  - name: dev
+    namespace: test-app-dev
+    deployment:
+      method: rolling-upgrade
+    services:
+      - name: front
+        external_url: front.test-app.dev.prsn-dev.io
+        ssl: false
+        port: 80
+        env:
+          - name: USERNAME
+            value: 'admin'
+          - name: USERNAME
+            value: 'password'
+          - name: BACK_END
+            value: back.test-app-dev.svc.cluster.local
+          - name: APP_PORT
+            value: 80
+      - name: back
+        external_url: back.test-app.dev.prsn-dev.io
+        ssl: false
+        port: 80
+        env:
+          - name: APP_PORT
+            value: 80
+  - name: prod
+    namespace: test-app
+    deployment:
+      method: rolling-upgrade
+    services: 
+      - name: front
+        external_url: front.test-app.prsn-dev.io
+        ssl: false
+        port: 80
+        env:
+          - name: BACK_END
+            value: back.test-app.svc.cluster.local
+          - name: APP_PORT
+            value: 80
+      - name: back
+        external_url: back.test-app.prsn-dev.io
+        ssl: false
+        port: 80
+        env:
+          - name: APP_PORT
+            value: 80

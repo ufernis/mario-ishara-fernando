@@ -1,0 +1,22 @@
+project: test-app
+applications:
+  - name: front
+    runtime: ubuntu-nodejs5x:1.2
+    version: 1.0.1
+    dependencies:
+      - name: front
+        type: debian-package
+        origin:
+          build: front
+        version: 1.0.1
+    command: "node /app/index.js"
+  - name: back
+    runtime: ubuntu-nodejs5x:1.2
+    version: 1.0.1
+    dependencies:
+      - name: back
+        type: debian-package
+        origin:
+          build: back
+        version: 1.0.1
+    command: "node /app/index.js"

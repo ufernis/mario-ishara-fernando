@@ -1,0 +1,28 @@
+These steps will create jenkins inside the test-app namespace, and then that will deploy the front and back aps to both test-app and test-app-dev
+
+kubectl create namespace test-app
+kubectl create namespace test-app-dev
+kubectl create -f jenkins-deployment.yaml
+kubectl create -f jenkins-svc.yaml
+kubectl create -f jenkins-ing.yaml
+
+jenkins should build/deploy automatically, but to view progress add "<your ip> jenkins.test-app.dev.prsn-dev.io" to your hosts file and browse to it
+
+
+To test (don't forget to insert your ip)
+
+dev:
+
+curl -X POST -H 'Host: front.test-app.dev.prsn-dev.io' -H "Content-Type: application/json" -d '{"data": "blah", "username": "admin", "password": "password"}' http://<lbip>/
+
+prod:
+
+curl -X POST -H 'Host: front.test-app.prsn-dev.io' -H "Content-Type: application/json" -d '{"data": "blah", "username": "admin", "password": "password"}' http://<lbip>/
+
+
+(prod has a different password to dev as it should use defaults where the variables aren't set)
+
+
+if successful, the response will look like:
+
+{"status":"SUCCESS"}

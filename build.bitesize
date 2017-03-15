@@ -1,0 +1,58 @@
+project: test-app
+components:
+  - name: front
+    version: 1.0.1
+    os: linux
+    dependencies:
+      - type: gem-package
+        package: fpm
+      - type: debian-package
+        package: rlwrap
+      - type: debian-package
+        package: build-essential
+      - type: debian-package
+        package: libkrb5-dev
+      - type: debian-package
+        package: nodejs
+        version: 5.9.0-1nodesource1~trusty1
+        location: https://deb.nodesource.com/node_5.x/pool/main/n/nodejs/nodejs_5.9.0-1nodesource1~trusty1_amd64.deb
+    repository:
+      git: git@github.com:AndyMoore111/test-app-v2.git
+      branch: master
+    build:
+      - shell: node --version
+      - shell: npm --version
+      - shell: "rm -f *.deb"
+      - shell: npm install front --prefix front
+      - shell: fpm -s dir -C front -t deb -n front -x "**/.git/**" -v 1.0.1-$(date "+%Y%m%d%H%M%S") --prefix /app .
+      - shell: ls -al
+    artifacts:
+      - location: "*.deb"
+  - name: back
+    version: 1.0.1
+    os: linux
+    dependencies:
+      - type: gem-package
+        package: fpm
+      - type: debian-package
+        package: rlwrap
+      - type: debian-package
+        package: build-essential
+      - type: debian-package
+        package: libkrb5-dev
+      - type: debian-package
+        package: nodejs
+        version: 5.9.0-1nodesource1~trusty1
+        location: https://deb.nodesource.com/node_5.x/pool/main/n/nodejs/nodejs_5.9.0-1nodesource1~trusty1_amd64.deb
+    repository:
+      git: git@github.com:AndyMoore111/test-app-v2.git
+      branch: master
+    build:
+      - shell: node --version
+      - shell: npm --version
+      - shell: "rm -f *.deb"
+      - shell: npm install back --prefix back
+      - shell: fpm -s dir -C back -t deb -n back -x "**/.git/**" -v 1.0.1-$(date "+%Y%m%d%H%M%S") --prefix /app .
+      - shell: ls -al
+    artifacts:
+      - location: "*.deb"

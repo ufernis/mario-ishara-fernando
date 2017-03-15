@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  creationTimestamp: null
+  labels:
+    ssl: "False"
+  name: jenkins
+  namespace: test-app
+spec:
+  rules:
+  - host: jenkins.test-app.dev.prsn-dev.io
+    http:
+      paths:
+      - backend:
+          serviceName: jenkins
+          servicePort: 80
+        path: /
+status:
+  loadBalancer: {}
